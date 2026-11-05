@@ -83,7 +83,7 @@ static void recycled_cb(void)
 /* STEP 16 - Define a function to simulate the data */
 static void simulate_data(void)
 {
-	char app_sensor_value;
+	/*app_sensor_value++;
 	if (app_sensor_value == 200) {
 		app_sensor_value = 100;
 	}
@@ -92,9 +92,10 @@ static void simulate_data(void)
 	sensor_data.x = m.x;
 	sensor_data.y = m.y;
 	sensor_data.z = m.z;
-	//sensor_data.suunta = 0; // Initialize to a default value
+	sensor_data.suunta = 0; // Initialize to a default value
 	printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
-
+	printk("Simulated sensor value: %d\n", app_sensor_value);
+*/
 }
 static void app_led_cb(bool led_state)
 {
@@ -109,14 +110,29 @@ static bool app_button_cb(void)
 /* STEP 18.1 - Define the thread function  */
 void send_data_thread(void)
 {
-	while (1) {
-		/* Simulate data */
-		simulate_data();
-		/* Send notification, the function sends notifications only if a client is subscribed */
-		my_lbs_send_sensor_notify(sensor_data);
+	int err;
+	struct Measurement m = readADCValue();
+	sensor_data.x = m.x;
+	sensor_data.y = m.y;
+	sensor_data.z = m.z;
+	sensor_data.suunta;
+	printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
 
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));
-	}
+    while (1) {
+        uint32_t values[] = {sensor_data.x, sensor_data.y, sensor_data.z, sensor_data.suunta};
+
+        for (int i = 0; i < 4; i++) {
+            err = my_lbs_send_sensor_notify(values[i]);
+
+            if (err == 0) {
+                printk("BLE sent: %u\n", values[i]);
+            } else {
+                printk("Fail: %d\n", err);
+            }
+
+            k_sleep(K_MSEC(1000));
+        }
+    }
 }
 
 static struct my_lbs_cb app_callbacks = {
