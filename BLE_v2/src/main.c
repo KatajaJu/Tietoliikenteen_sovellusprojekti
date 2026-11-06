@@ -43,7 +43,8 @@ LOG_MODULE_REGISTER(Lesson4_Exercise2, LOG_LEVEL_INF);
 #define USER_BUTTON_2           DK_BTN2_MSK
 #define USER_BUTTON_3           DK_BTN3_MSK
 
-
+static bool button_3_pressed = false;
+int kerta = 0;
 struct SensorData sensor_data;
 static bool app_button_state;
 static struct k_work adv_work;
@@ -83,10 +84,6 @@ static void recycled_cb(void)
 /* STEP 16 - Define a function to simulate the data */
 static void simulate_data(void)
 {
-	char app_sensor_value;
-	if (app_sensor_value == 200) {
-		app_sensor_value = 100;
-	}
 
 	struct Measurement m = readADCValue();
 	sensor_data.x = m.x;
@@ -109,13 +106,24 @@ static bool app_button_cb(void)
 /* STEP 18.1 - Define the thread function  */
 void send_data_thread(void)
 {
-	while (1) {
-		/* Simulate data */
-		simulate_data();
-		/* Send notification, the function sends notifications only if a client is subscribed */
-		my_lbs_send_sensor_notify(sensor_data);
+	while (1){
+		if (button_3_pressed){
+			/* Simulate data */
+			simulate_data();
+			/* Send notification, the function sends notifications only if a client is subscribed */
+			my_lbs_send_sensor_notify(sensor_data);
 
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));
+			k_sleep(K_MSEC(NOTIFY_INTERVAL));
+			kerta++;
+			printk("kerta: %d\n", kerta);
+			if (kerta >= 100){
+				button_3_pressed = false;
+				kerta = 0;
+			}
+		}
+		else{
+			k_sleep(K_MSEC(100));
+		}
 	}
 }
 
@@ -148,6 +156,8 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 	if ((has_changed & USER_BUTTON_3) && (button_state & USER_BUTTON_3)) 
 	{
 		printk("Nappi 3 alhaalla\n");
+		button_3_pressed = true;
+
 	}		
 
 }
