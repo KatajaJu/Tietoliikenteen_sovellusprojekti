@@ -4,6 +4,10 @@ Tämä GitHub repositorio sisältää syksyllä 2026 tehtyyn tietoliikenteen sov
 
 Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP API. Kerättyä dataa haetaan HTTP-rajanpinnasta koodatulla ohjelmalla ja käsitellään koneoppimistarkoituksiin.
 
+# Bluetooth yhteys
+
+Projektissa käytetään nrf5340 laitetta ja ADXL355 kiihtyvyysanturia mittausdatan hankkimiseen. Laitteelle koodit on tehty vs coden nrf connet lisäosalla. Data lähetetään bluetooth yhteydellä nrf laudalta Raspery pi:lle.
+
 # Arkkitehtuurikuva
 <!--
 Source - https://stackoverflow.com/q/41604263
