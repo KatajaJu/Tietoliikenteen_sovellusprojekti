@@ -88,11 +88,9 @@ static void simulate_data(void)
 	struct Measurement m = readADCValue();
 	sensor_data.x = m.x;
 	sensor_data.y = m.y;
-	sensor_data.z = m.z;
-	sensor_data.suunta = 0; // Initialize to a default value
-	printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
-	printk("Simulated sensor value: %d\n", app_sensor_value);
-*/
+	sensor_data.z = m.z; 
+	printk("x = %d,  y = %d,  z = %d suunta=%d\n",m.x,m.y,m.z,sensor_data.suunta);
+
 }
 static void app_led_cb(bool led_state)
 {
