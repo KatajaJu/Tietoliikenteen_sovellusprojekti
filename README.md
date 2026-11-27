@@ -8,7 +8,28 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 Projektissa käytetään nrf5340 laitetta ja ADXL355 kiihtyvyysanturia mittausdatan hankkimiseen. Laitteelle koodit on tehty vs coden nrf connet lisäosalla. Data lähetetään bluetooth yhteydellä nrf laudalta Raspery pi:lle.
 
-# Arkkitehtuurikuva
+nrf5340:
+
+![image](Documents/nrf5340.jfif)
+
+ADXL355:
+
+![image](Documents/adxl355.jfif)
+
+#Tietokanta
+
+Raspery pi:sta mittausdata lähetetään ubuntu serverin tietokantaan, josta se voidaan hakea csv tiedostoon.
+Tietokannan rakenne:
+
+![image](Documents/tietokanta.png)
+
+#K means algorytmi
+
+K means algorytmin avulla mittaus datasta arvotaan 6 keskipistettä. Varmistetaan, että jokainen arvottu piste on lähin ainakin yhteen data pisteeseen. Arvotut pisteet (x) ja niiden lähimmät data pisteet voidaan visualisoida.
+
+![image](Documents/pisteet.png)
+
+#Arkkitehtuurikuva
 <!--
 Source - https://stackoverflow.com/q/41604263
 Posted by zjffdu, modified by community. See post 'Timeline' for change history

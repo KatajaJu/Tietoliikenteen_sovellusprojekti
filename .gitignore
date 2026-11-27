@@ -2,3 +2,4 @@ BLE_v2/build/
 .vscode/
 ble_bleak/venv/
 ble_server/venv/
+.env
